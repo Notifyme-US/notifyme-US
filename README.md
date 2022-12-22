@@ -55,9 +55,30 @@ Mandela Steele-Dadzie
 Stretch Goals:
 
 --chat roulette
---
 
 ### Planning
+
+![UML](./assets/UML.png)
+
+### Create your Pitch
+
+## Notifyme-US
+
+Summary of idea.
+
+* Create a discord style messaging / communication service with authorization to members area/channels and API call/ create notifications based on set filters/parameters.
+
+What problem or pain point does it solve? a. Keep it high level without going into too much detail. (3-4 sentences is enough)
+
+* It creates a viable communication tool to be used by companies and or consumer use.
+
+Minimum Viable Product (MVP) definition.
+
+* A multi channel message service with query based notification based on user preferences.
+
+What is the minimum required for you to present on your demo day?
+
+* A complete set of commication channels with proper log in/authorization required to read/write/view information.
 
 ### Deliverable
 
