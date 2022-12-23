@@ -59,3 +59,5 @@ Acceptance Tests - correctly blocks a user, correctly updates user(s) profile(s)
 ![Auth Diagram](./assets/AuthDiagram.png)
 
 ![Notification Diagram](./assets/NotificationsDiagram.png)
+
+![Database Schema](./assets/dBSchema.png)
