@@ -238,3 +238,4 @@ Will you be using a PR review workflow? If so, consider:
   How will you communicate that it’s time to merge?
 
   * Constant open communication/ Standups.
+
