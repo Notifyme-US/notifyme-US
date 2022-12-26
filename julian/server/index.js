@@ -1,14 +1,13 @@
 'use strict';
 
 require('dotenv').config();
-const express = require('express');
+const app = require('express')();
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const authRouter = require('./auth/authRouter');
 
 const PORT = process.env.PORT || 3002;
 
-const app = express();
 const httpServer = createServer(app);
 const server = new Server(httpServer);
 const chat = server.of('/chat');
@@ -42,35 +41,24 @@ chat.on('connection', socket => {
     const dt = dtf.format(new Date());
     payload.received = `Message received by server at ${dt}`;
     socket.emit('RECEIVED', payload);
-
-    // Store Message in DB or queue
   });
 
-  // socket.on('RECEIVED', payload => { //payload = {content: string}
-  //   const username = users[socket.id];
-  //   payload.username = username;
-  //   socket.emit('MESSAGE', payload);
-
-  //   // Store Message in DB or queue
-  // });
 
   socket.on('TYPING', payload => { //payload = null
     const username = users[socket.id];
     socket.broadcast.emit('TYPING', username);
   });
 
-  // socket.on('GET_MESSAGES', payload => { //payload = {username: string, room: string}
-  //   const { username, room } = payload;
-
-  // });
   socket.on('disconnect', reason => {
     console.log('client disconnected');
     const { username, room } = users[socket.id];
     socket.to(room).emit('LEAVE', `${username} has left the room`);
-    delete users[socket.id];
+    if(users[socket.id]) { delete users[socket.id]; }
   });
 });
 
 app.use(authRouter);
 
-httpServer.listen(PORT);
+httpServer.listen(PORT, () => {
+  console.log(`listening on port: ${PORT}`);
+});

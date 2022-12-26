@@ -3,7 +3,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.SECRET || 'CMS-SECRET';
+const SECRET = process.env.SECRET || 'secret';
 
 
 
@@ -18,8 +18,8 @@ const userModel = (db, DataTypes) => {
       type: DataTypes.STRING,
       required: true,
     },
-    role: {
-      type: DataTypes.STRING,
+    roles: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       required: true,
     },
     token: {
