@@ -40,7 +40,10 @@ const userModel = (db, DataTypes) => {
 
   model.authBasic = async function (username, password)  {
     const user = await this.findOne({ where: { username }});
+    console.log('🚀 ~ file: users.js:43 ~ user', user);
+    if(!user) throw new Error('Invalid User');
     const valid = await bcrypt.compare(password, user.password);
+    console.log('🚀 ~ file: users.js:45 ~ valid', valid);
     if(valid) {
       return user;
     }

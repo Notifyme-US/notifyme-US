@@ -5,6 +5,7 @@ const app = require('express')();
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const authRouter = require('./auth/authRouter');
+const { db } = require('./models/index');
 
 const PORT = process.env.PORT || 3002;
 
@@ -51,14 +52,18 @@ chat.on('connection', socket => {
 
   socket.on('disconnect', reason => {
     console.log('client disconnected');
-    const { username, room } = users[socket.id];
-    socket.to(room).emit('LEAVE', `${username} has left the room`);
-    if(users[socket.id]) { delete users[socket.id]; }
+    if(users[socket.id]) {
+      const { username, room } = users[socket.id];
+      socket.to(room).emit('LEAVE', `${username} has left the room`);
+      delete users[socket.id];
+    }
   });
 });
 
 app.use(authRouter);
 
-httpServer.listen(PORT, () => {
-  console.log(`listening on port: ${PORT}`);
+db.sync().then(() => {
+  httpServer.listen(PORT, () => {
+    console.log(`listening on port: ${PORT}`);
+  });
 });
