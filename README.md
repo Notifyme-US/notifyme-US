@@ -31,10 +31,54 @@ Mandela Steele-Dadzie
 
 * Messaging / Socket Service  API weather notification. -
   socket
+  -- authentication?
+  -- RBAC?
+  -- cache?
+  -- AWS?
+  --SNS+SQS - text / email service / notification service
+
+### Choice Two
 
 * Discord Server Clone - API calls, sockets/messaging
 
+--- Use Inquirer?
+
+-- RBAC
+-- Auth0 / build out / roles
+-- cache
+-- general chat channel
+--group channels
+
+-- created rooms by Role
+-- "break rooms" per roles
+
+Stretch Goals:
+
+--chat roulette
+
 ### Planning
+
+![UML](./assets/UML.png)
+
+### Create your Pitch
+
+## Notifyme-US
+
+Summary of idea.
+
+* Create a discord style messaging / communication service with authorization to members area/channels and API call/ create notifications based on set filters/parameters.
+
+What problem or pain point does it solve? a. Keep it high level without going into too much detail. (3-4 sentences is enough)
+
+* It creates a viable communication tool to be used by companies and or consumer use.
+
+Minimum Viable Product (MVP) definition.
+
+* A multi channel message service with query based notification based on user preferences.
+
+What is the minimum required for you to present on your demo day?
+
+* A complete set of commication channels with proper log in/authorization required to read/write/view information.
 
 ### Deliverable
 
@@ -84,6 +128,16 @@ Group - Pair Programming, morning/afternoon/EOD stand-ups/updates.
 
 ### Conflict Plan
 
+* Speak / share concerns, ideas, thoughts, worries, etc with eachother and team building.
+
+* What if there's a power outage? Send slack, email, notify team members of any change and / or emergency.
+
+* What if a team member doesn't show up/time off?
+
+* What if team member feels behind/ blocker? Team member bring it up to someone, someone helps assists others.
+
+* Constant and frequent commmunication of status of each team member, tasks, etc.
+
 What will be your group’s process to resolve conflict, when it arises?
 
 * constant open communication
@@ -109,7 +163,13 @@ How and when will you escalate the conflict if your resolution attempts are unsu
 
 * 2/3 strikes/(pattern of behavior) and then take issues to Instructor
 
+* How many people concern, group vote
+
+* how many people to make changes, bring up issues.
+
 ### Communication plan
+
+* ACP often, frequently, update team members/organization.
 
 What hours will you be available to communicate?
 
@@ -119,7 +179,7 @@ What hours will you be available to communicate?
 
 What platforms will you use to communicate (ie. Slack, phone …)?
 
-Remo, Zoom, Discord, Slack, etc.
+Slack, Remo, Zoom, Discord, etc.
 
 How often will you take breaks?
 
@@ -144,6 +204,8 @@ Constant open communication/ Standups. Work as a team, don't be a Richard.
 ### Work Plan
 
 * Constant open communication/ Standups.
+
+* Allignment ? Find allignment ?
 
 ### Git Process
 
@@ -176,3 +238,4 @@ Will you be using a PR review workflow? If so, consider:
   How will you communicate that it’s time to merge?
 
   * Constant open communication/ Standups.
+

@@ -1,0 +1,24 @@
+{
+  "name": "notifyme-us",
+  "version": "1.0.0",
+  "description": "Notification messaging service",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Notifyme-US/notifyme-US.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Notifyme-US/notifyme-US/issues"
+  },
+  "homepage": "https://github.com/Notifyme-US/notifyme-US#readme",
+  "dependencies": {
+    "eslint": "^8.30.0"
+  }
+}
