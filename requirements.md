@@ -54,6 +54,36 @@ Feature Tasks - able to block users, able to update user profiles, able to updat
 
 Acceptance Tests - correctly blocks a user, correctly updates user(s) profile(s), correctly blocks access per roles.
 
+### 6
+
+Title - Subscribe to general chat
+
+User Story sentence - As a user I want to be able to subscribe to the general chat channel/room
+
+Feature Tasks - Can connect to and subscribe to general chat channel/room.
+
+Acceptance Tests - Properly authorizes user based on RBAC to connect, view, message, etc. in general chat as well as subscribe to be notified of new messages, content on general chat channel/room.
+
+### 7
+
+Title - Admin control/ RBAC users control
+
+User Story sentence - As an admin I want to be able to add and remove a user from roles, channels, etc.
+
+Feature Tasks - RBAC control to add and or remove users to channels/rooms and change their access.
+
+Acceptance Tests - Admin has proper RBAC to add and remove users from channels/rooms.
+
+### 8
+
+Title - Admin control/ RBAC channels control
+
+User Story sentence - As an admin I want to be able to add and remove channels/rooms
+
+Feature Tasks - RBAC control to add and or remove channels/rooms and change their access.
+
+Acceptance Tests - Admin has proper RBAC to add and remove channels/rooms.
+
 ![Socket Diagram](./assets/SocketDiagram.png)
 
 ![Auth Diagram](./assets/AuthDiagram.png)
