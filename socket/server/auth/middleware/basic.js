@@ -8,6 +8,7 @@ module.exports = async (req, res, next) => {
   if(!req.headers.authorization) {
     res.status(403).send('Invalid Login');
   }
+  console.log('heloooooooooo---------------', req.headers);
   let basic = req.headers.authorization.split(' ').pop();
   let [user, pass] = base64.decode(basic).split(':');
   try {

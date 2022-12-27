@@ -28,6 +28,7 @@ async function handleSignin(req, res, next) {
   const output = {user: req.user, token: req.user.token};
   console.log('handle signin');
   res.status(200).json(output);
+  // console.log('hello-----------------', output);
 }
 
 async function handleGetUsers(req, res, next) {

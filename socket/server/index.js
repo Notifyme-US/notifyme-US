@@ -6,6 +6,7 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const authRouter = require('./auth/authRouter');
 const { db } = require('./models/index');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 3002;
 
@@ -61,6 +62,7 @@ chat.on('connection', socket => {
   });
 });
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(authRouter);
