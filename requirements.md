@@ -91,3 +91,5 @@ Acceptance Tests - Admin has proper RBAC to add and remove channels/rooms.
 ![Notification Diagram](./assets/NotificationsDiagram.png)
 
 ![Database Schema](./assets/dBSchema.png)
+
+[Trello Board](https://trello.com/b/UkFI8VZF/project-board)
