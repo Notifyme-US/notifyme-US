@@ -13,23 +13,25 @@ const socket = io(`${SERVER}/chat`);
 const authPrompt = require('./authPrompt')(socket, SERVER);
 console.log('------------');
 
+const session = {};
+
 socket.on('connect', async () => {
   console.log('connected');
 
-  const session = {};
-
-  session.username = await authPrompt();
+  const { username, rooms } = await authPrompt();
+  session.username = username;
+  session.roomList = rooms;
 
   // ! Do something here to get rooms from RBAC
 
-  const roomChoices = [
-    'general chat',
-    'questions',
-    'support',
-    'commands',
-  ];
+  // const roomChoices = [
+  //   'general chat',
+  //   'questions',
+  //   'support',
+  //   'commands',
+  // ];
 
-  session.room = await roomPrompt(roomChoices);
+  session.room = await roomPrompt(session.roomList);
 
   socket.emit('JOIN', {
     username: session.username,
@@ -99,6 +101,9 @@ async function messenger() {
     }
     if (cmd === 'events') {
       socket.emit('EVENTS', arg);
+    }
+    if (cmd === 'back') {
+      return roomPrompt(session.roomList);
     }
   }
   socket.emit('MESSAGE', payload);

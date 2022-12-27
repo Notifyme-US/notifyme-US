@@ -82,6 +82,7 @@ module.exports = (socket, SERVER) => async function authPrompt() {
       console.log('Invalid Login\n\n');
       return authPrompt();
     }
+    return { rooms: response.data, username };
   }
   if(authRoute === 'signup') {
     const body = {};
