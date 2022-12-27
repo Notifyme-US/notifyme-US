@@ -4,7 +4,7 @@ const express = require('express');
 const axios = require('axios');
 const dotenv = require('dotenv');
 const Mailgun = require('mailgun-js');
-// const polyline = require('@mapbox/polyline');
+
 
 
 
@@ -60,8 +60,6 @@ app.get('/forecast', async (req, res) => {
     const forecastData5 = getForecastData(36);
 
 
-    // console.log(forecastData1);
-
     const currentDate = new Date();
     const forecastDates = [];
 
@@ -109,6 +107,7 @@ app.get('/forecast', async (req, res) => {
         res.status(500).send({ message: 'An error occurred' });
       } else {
         res.send({ message: 'Email sent successfully', msg });
+        console.log(msg.text);
       }
     });
 
@@ -134,9 +133,6 @@ app.get('/current', async (req, res) => {
     let lat = latLon.data.features[0].center[1];
     let lon = latLon.data.features[0].center[0];
 
-
-
-
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
 
@@ -155,8 +151,6 @@ app.get('/current', async (req, res) => {
     const windMphFormatted = windMph.toFixed(2);
     const cloudCoverage = forecast.clouds.all;
     const town = forecast.name;
-
-
 
     const msg = {
       to: 'steveo732@gmail.com',
@@ -184,7 +178,7 @@ app.get('/current', async (req, res) => {
         console.error(error);
         res.status(500).send({ message: 'An error occurred' });
       } else {
-        console.log(msg);
+        console.log(msg.text);
 
         res.send({ message: 'Email sent successfully', msg });
       }
@@ -197,8 +191,6 @@ app.get('/current', async (req, res) => {
     res.status(500).send({ message: 'An error occurred' });
   }
 });
-
-
 
 
 app.get('/directions', async (req, res) => {
@@ -215,7 +207,6 @@ app.get('/directions', async (req, res) => {
     const latLonTwo = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/address/${addressTwo}.json?access_token=${token}&country=us`);
 
 
-
     let addressOneCoor = latLonOne.data.features[0].center;
     let addressTwoCoor = latLonTwo.data.features[0].center;
 
@@ -227,9 +218,6 @@ app.get('/directions', async (req, res) => {
     const directions = response.data;
     const step = directions.routes[0].legs[0].steps;
 
-
-
-
     const instructionsAndDistance = step.map(step => ({
       instruction: step.maneuver.instruction,
       distance: parseFloat((step.distance / 1609.344).toFixed(2)),
@@ -240,15 +228,6 @@ app.get('/directions', async (req, res) => {
     const roundedDistance = distance.toFixed(2);
 
     const duration = Math.ceil(directions.routes[0].duration / 60);
-
-    // const firstWay = directions.waypoints[0].location;
-    // const secondWay = directions.waypoints[1].location;
-
-    // const firstWayFormatted = `(${firstWay[0]},${firstWay[1]})`;
-    // const secondWayFormatted = `(${secondWay[0]},${secondWay[1]})`;
-
-    // console.log(firstWayFormatted);  // Output: (41.817494,-87.846475)
-    // console.log(secondWayFormatted);  // Output: (41.958115,-87.743659)
 
     const msg = {
       to: 'steveo732@gmail.com',
@@ -280,7 +259,7 @@ app.get('/directions', async (req, res) => {
         console.error(error);
         res.status(500).send({ message: 'An error occurred', msg });
       } else {
-        console.log(msg);
+        console.log(msg.text);
         res.send({ message: 'Email sent successfully', msg });
 
       }
@@ -291,21 +270,21 @@ app.get('/directions', async (req, res) => {
   }
 });
 
-app.get('/concerts', async (req, res) => {
+app.get('/events', async (req, res) => {
   try {
 
     const currentDate = new Date();
     const startDateTime = currentDate.toISOString().slice(0, -5) + 'Z';
 
-    const endDateTime = new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, -5) + 'Z';
+    const endDateTime = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, -5) + 'Z';
     console.log(startDateTime);
     console.log(endDateTime);
 
 
     let apikey = process.env.TICKET_API;
-    let city = 'brookfield';
-    let stateCode = 'IL';
-    let radius = '60';
+    let city = 'seattle';
+    let stateCode = 'wa';
+    let radius = '20';
     let unit = 'miles';
 
 
@@ -314,13 +293,74 @@ app.get('/concerts', async (req, res) => {
 
     const concerts = response.data;
 
-    console.log(concerts);
-    res.send({ message: 'Concerts retrieved successfully', concerts });
+
+    const toStandardTime = function (time) {
+
+      const [hours, minutes, seconds] = time.split(':');
+      let hoursFix = parseInt(hours, 10);
+      let minutesFix = parseInt(minutes, 10);
+      let secondsFix = parseInt(seconds, 10);
+
+      if (hoursFix >= 12) {
+
+        hoursFix -= 12;
+
+
+        time = `${hoursFix.toString().padStart(2, '0')}:${minutesFix
+          .toString()
+          .padStart(2, '0')}:${secondsFix.toString().padStart(2, '0')} PM`;
+      } else {
+
+        time = `${hoursFix.toString().padStart(2, '0')}:${minutesFix
+          .toString()
+          .padStart(2, '0')}:${secondsFix.toString().padStart(2, '0')} AM`;
+      }
+
+      return time;
+    };
+    let eventList = '';
+
+    for (let i = 0; i < 5; i++) {
+      const venueData = concerts._embedded.events[i];
+      const venue = venueData._embedded.venues[0].name;
+      const eventName = concerts._embedded.events[i].name;
+      const eventUrl = concerts._embedded.events[i].url;
+      const eventDate = concerts._embedded.events[i].dates;
+      const eventStartTime = eventDate.start.localTime;
+      const eventStartDate = eventDate.start.localDate;
+      const newTime = toStandardTime(eventStartTime);
+
+      eventList += `<li>${eventName} at ${venue} on ${eventStartDate} at ${newTime}, Link: ${eventUrl}</li>`;
+    }
+
+    const msg = {
+      to: 'steveo732@gmail.com',
+      from: 'notifyme.us@gmail.com',
+      subject: 'Check Out These 5 events happening this week!',
+      text: `Five Upcoming Events in your Area: ${eventList}`,
+      html: `<p>Five Upcoming Events in your Area:</p>
+             <ul>
+               ${eventList}
+             </ul>`,
+    };
+
+    mailgun.messages().send(msg, (error, body) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: 'An error occurred', msg });
+      } else {
+        console.log(msg.text);
+        res.send({ message: 'Email sent successfully', msg });
+
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: 'An error occurred' });
   }
 });
+
+
 
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
