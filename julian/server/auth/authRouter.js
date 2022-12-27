@@ -4,6 +4,7 @@ const express = require('express');
 const authRouter = express.Router();
 
 const { users } = require('../models');
+console.log('🚀 ~ file: authRouter.js:7 ~ users', users);
 
 const basicAuth = require('./middleware/basic');
 
@@ -13,9 +14,11 @@ authRouter.get('/users', handleGetUsers);
 
 async function handleSignup(req, res, next) {
   try {
-    let user = await users.create(req.body);
-    const output = {user, token: user.token};
-    res.status(201).json(output);
+    const userInfo = req.body;
+    userInfo.roles = ['member'];
+    const user = await users.create(userInfo);
+    console.log('🚀 ~ file: authRouter.js:21 ~ handleSignup ~ user', user);
+    res.status(201).json(user);
   } catch (e) {
     next(e);
   }

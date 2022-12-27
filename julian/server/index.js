@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const app = require('express')();
+const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const authRouter = require('./auth/authRouter');
@@ -9,6 +9,7 @@ const { db } = require('./models/index');
 
 const PORT = process.env.PORT || 3002;
 
+const app = express();
 const httpServer = createServer(app);
 const server = new Server(httpServer);
 const chat = server.of('/chat');
@@ -60,6 +61,8 @@ chat.on('connection', socket => {
   });
 });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(authRouter);
 
 db.sync().then(() => {
