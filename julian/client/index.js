@@ -7,9 +7,11 @@ const inquirer = require('inquirer');
 
 const local = true;
 const SERVER = local ? process.env.SERVER_LOCAL : process.env.SERVER;
+console.log('🚀 ~ file: index.js:10 ~ SERVER', SERVER);
 const socket = io(`${SERVER}/chat`);
 
 const authPrompt = require('./authPrompt')(socket, SERVER);
+console.log('------------');
 
 socket.on('connect', async () => {
   console.log('connected');
