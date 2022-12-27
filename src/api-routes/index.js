@@ -3,16 +3,16 @@
 const express = require('express');
 const axios = require('axios');
 const dotenv = require('dotenv');
-
-
 const Mailgun = require('mailgun-js');
-const mailgun = new Mailgun({ apiKey: process.env.MAILGUN_KEY, domain: process.env.MAILGUN_DOMAIN });
+// const polyline = require('@mapbox/polyline');
+
+
 
 
 dotenv.config();
+const mailgun = new Mailgun({ apiKey: process.env.MAILGUN_KEY, domain: process.env.MAILGUN_DOMAIN });
 
-// const sgMail = require('@sendgrid/mail');
-// sgMail.setApiKey();
+
 
 
 const app = express();
@@ -39,7 +39,7 @@ app.get('/forecast', async (req, res) => {
       `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
     );
 
-    const getForecastData = function(dayIndex) {
+    const getForecastData = function (dayIndex) {
       const forecast = response.data.list[dayIndex];
       const weather = forecast.weather[0].description;
       const temperature = forecast.main.temp;
@@ -59,8 +59,19 @@ app.get('/forecast', async (req, res) => {
     const forecastData4 = getForecastData(28);
     const forecastData5 = getForecastData(36);
 
-    console.log(response.data.city.name);
-    console.log(forecastData1);
+
+    // console.log(forecastData1);
+
+    const currentDate = new Date();
+    const forecastDates = [];
+
+    for (let i = 0; i < 5; i++) {
+      const forecastDate = new Date(currentDate);
+      forecastDate.setDate(currentDate.getDate() + i);
+      forecastDates.push(forecastDate);
+    }
+
+    console.log(response.data);
 
 
 
@@ -69,24 +80,24 @@ app.get('/forecast', async (req, res) => {
       from: 'notifyme.us@gmail.com',
       subject: 'Your 5 Day Weather Forecast',
       text: `The weather forecast for the next 5 days in ${forecastData1.city} from NotifyMe-US:
-      Day 1: ${forecastData1.temp} °F with ${forecastData1.weather}
-      Day 2: ${forecastData2.temp} °F with ${forecastData2.weather}
-      Day 3: ${forecastData3.temp} °F with ${forecastData3.weather}
-      Day 4: ${forecastData4.temp} °F with ${forecastData4.weather}
-      Day 5: ${forecastData5.temp} °F with ${forecastData5.weather}
+      ${forecastDates[0].toLocaleDateString()}: ${forecastData1.temp} °F with ${forecastData1.weather}
+      ${forecastDates[1].toLocaleDateString()}: ${forecastData2.temp} °F with ${forecastData2.weather}
+      ${forecastDates[2].toLocaleDateString()}: ${forecastData3.temp} °F with ${forecastData3.weather}
+      ${forecastDates[3].toLocaleDateString()}: ${forecastData4.temp} °F with ${forecastData4.weather}
+      ${forecastDates[4].toLocaleDateString()}: ${forecastData5.temp} °F with ${forecastData5.weather}
     `,
       html: `<p>The weather forecast for the next 5 days in ${forecastData1.city} from NotifyMe-US:
       <ul>
       <li>
-      Day 1: ${forecastData1.temp} °F with ${forecastData1.weather}</li>
+       ${forecastDates[0].toLocaleDateString()}: ${forecastData1.temp} °F with ${forecastData1.weather}</li>
       <li>
-      Day 2: ${forecastData2.temp} °F with ${forecastData2.weather}</li>
+       ${forecastDates[1].toLocaleDateString()}: ${forecastData2.temp} °F with ${forecastData2.weather}</li>
       <li>
-      Day 3: ${forecastData3.temp} °F with ${forecastData3.weather}</li>
+       ${forecastDates[2].toLocaleDateString()}: ${forecastData3.temp} °F with ${forecastData3.weather}</li>
       <li>
-      Day 4: ${forecastData4.temp} °F with ${forecastData4.weather}</li>
+       ${forecastDates[3].toLocaleDateString()}: ${forecastData4.temp} °F with ${forecastData4.weather}</li>
       <li>
-      Day 5: ${forecastData5.temp} °F with ${forecastData5.weather}</li>
+       ${forecastDates[4].toLocaleDateString()}: ${forecastData5.temp} °F with ${forecastData5.weather}</li>
       </ul>
       </p>`,
     };
@@ -157,7 +168,7 @@ app.get('/current', async (req, res) => {
 
 
       html: `<p>
-      Here is your custom weather forecast for today NotifyMe-US:
+      Here is your custom weather forecast for today from NotifyMe-US::
       <ul>
       <li>
       The weather in ${town} is currently ${weather}. The high temperature for today will be ${fahrenheitRoundedHigh} degrees Fahrenheit, and the low temperature will be ${fahrenheitRoundedLow} degrees Fahrenheit.</li>
@@ -211,20 +222,74 @@ app.get('/directions', async (req, res) => {
     let coordinates = `${addressOneCoor[0]},${addressOneCoor[1]};${addressTwoCoor[0]},${addressTwoCoor[1]}`;
 
 
-
-    const response = await axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${coordinates}?geometries=geojson&overview=simplified&steps=true&access_token=${token}`);
+    const response = await axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${coordinates}?geometries=polyline&overview=simplified&steps=true&access_token=${token}`);
 
     const directions = response.data;
+    const step = directions.routes[0].legs[0].steps;
 
 
-    console.log(directions.routes[0].legs[0].steps);
-    res.send({ message: 'Directions retrieved successfully', directions });
+
+
+    const instructionsAndDistance = step.map(step => ({
+      instruction: step.maneuver.instruction,
+      distance: parseFloat((step.distance / 1609.344).toFixed(2)),
+    }));
+
+    const instructions = instructionsAndDistance.map(step => `${step.instruction} (${step.distance} miles)`).join('\n');
+    const distance = instructionsAndDistance.reduce((acc, step) => acc + step.distance, 0);
+    const roundedDistance = distance.toFixed(2);
+
+    const duration = Math.ceil(directions.routes[0].duration / 60);
+
+    // const firstWay = directions.waypoints[0].location;
+    // const secondWay = directions.waypoints[1].location;
+
+    // const firstWayFormatted = `(${firstWay[0]},${firstWay[1]})`;
+    // const secondWayFormatted = `(${secondWay[0]},${secondWay[1]})`;
+
+    // console.log(firstWayFormatted);  // Output: (41.817494,-87.846475)
+    // console.log(secondWayFormatted);  // Output: (41.958115,-87.743659)
+
+    const msg = {
+      to: 'steveo732@gmail.com',
+      from: 'notifyme.us@gmail.com',
+      subject: 'Your Daily Commute from NotifyMe-US',
+      text: `Your Daily Commute from NotifyMe-US for ${new Date().toLocaleDateString()}
+      Total distance: ${roundedDistance} miles
+      Total duration: ${duration} minutes,
+
+      Best Route:
+      ${instructions}`,
+
+      html: `<p>Your Daily Commute from NotifyMe-US for ${new Date().toLocaleDateString()}</p>
+      <p>Total distance: ${roundedDistance} miles</p>
+      <p>Total duration: ${duration} minutes</p>
+      <p>Best Route:</p>
+
+      <ol>
+      ${instructionsAndDistance.map(step => `<li>${step.instruction} (${step.distance} miles)</li>`).join('')}
+      </ol>
+      `,
+
+    };
+
+
+
+    mailgun.messages().send(msg, (error, body) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: 'An error occurred', msg });
+      } else {
+        console.log(msg);
+        res.send({ message: 'Email sent successfully', msg });
+
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: 'An error occurred' });
   }
 });
-
 
 app.get('/concerts', async (req, res) => {
   try {
