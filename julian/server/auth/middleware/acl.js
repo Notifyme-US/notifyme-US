@@ -10,9 +10,9 @@ module.exports = (capability) => {
       let role = req.user.role;
       let modelACL = perms.find(v => v.path === `/${model}`).acl;
       let roleRights = modelACL[role];
-      console.log("🚀 ~ file: acl.js:16 ~ return ~ roleRights", roleRights);
+      console.log('🚀 ~ file: acl.js:16 ~ return ~ roleRights', roleRights);
 
-      if(!roleRights?.includes(capability)) {
+      if(!roleRights.includes(capability)) {
         next('Access Denied');
       }
       next();
