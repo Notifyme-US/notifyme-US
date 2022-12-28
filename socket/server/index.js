@@ -11,6 +11,10 @@ const internalRouter = require('./internal-api');
 // const externalRouter = require('./external-api');
 const { db } = require('./models/index');
 
+const Queue = require('./lib/queue');
+
+const messageQueue = new Queue();
+
 const PORT = process.env.PORT || 3002;
 
 const app = express();
@@ -22,7 +26,11 @@ const dtf = new Intl.DateTimeFormat('en-US', {timeStyle: 'medium'});
 const users = {};
 
 chat.on('connection', socket => {
-  console.log('client connected on socket: ', socket.id);
+  socket.onAny((event, payload) => {
+    const time = new Date();
+    console.log('EVENT', {event, time, payload});  ///------
+    console.log('client connected on socket: ', socket.id);  ///-------
+  });
   socket.on('JOIN', payload => { //payload = {username: string, room: string}
     const { username, room } = payload;
     console.log('🚀 ~ file: index.js:19 ~ username', username);
@@ -38,6 +46,15 @@ chat.on('connection', socket => {
   });
 
   socket.on('MESSAGE', payload => { //payload = {content: string}
+
+    let currentQueue = messageQueue.read(payload);
+    if(!currentQueue){
+      let queueKey = messageQueue.store(payload, new Queue()); //--------
+      currentQueue = messageQueue.read(queueKey);
+    }
+    currentQueue.store(payload.messageId, payload);  //--------
+    socket.broadcast.emit('MESSAGE', payload);      //------
+
     const { username, room } = users[socket.id];
     console.log('🚀 ~ file: index.js:27 ~ username', username);
     payload.username = username;

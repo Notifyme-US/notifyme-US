@@ -1,22 +1,13 @@
 
-
 const express = require('express');
 const axios = require('axios');
 const dotenv = require('dotenv');
 const Mailgun = require('mailgun-js');
 
-
-
-
-
 dotenv.config();
 const mailgun = new Mailgun({ apiKey: process.env.MAILGUN_KEY, domain: process.env.MAILGUN_DOMAIN });
 
-
-
-
 const app = express();
-
 
 app.get('/forecast', async (req, res) => {
 
@@ -28,9 +19,7 @@ app.get('/forecast', async (req, res) => {
 
     let token = process.env.MAPBOX_TOKEN;
 
-
     const latLon = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/postcode/${zip}.json?access_token=${token}&country=us`);
-
 
     let lat = latLon.data.features[0].center[1];
     let lon = latLon.data.features[0].center[0];
@@ -70,8 +59,6 @@ app.get('/forecast', async (req, res) => {
     }
 
     console.log(response.data);
-
-
 
     const msg = {
       to: 'steveo732@gmail.com',
@@ -185,13 +172,11 @@ app.get('/current', async (req, res) => {
     });
 
 
-
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: 'An error occurred' });
   }
 });
-
 
 app.get('/directions', async (req, res) => {
   let token = process.env.MAPBOX_TOKEN;
@@ -211,7 +196,6 @@ app.get('/directions', async (req, res) => {
     let addressTwoCoor = latLonTwo.data.features[0].center;
 
     let coordinates = `${addressOneCoor[0]},${addressOneCoor[1]};${addressTwoCoor[0]},${addressTwoCoor[1]}`;
-
 
     const response = await axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${coordinates}?geometries=polyline&overview=simplified&steps=true&access_token=${token}`);
 
@@ -253,7 +237,6 @@ app.get('/directions', async (req, res) => {
     };
 
 
-
     mailgun.messages().send(msg, (error, body) => {
       if (error) {
         console.error(error);
@@ -279,7 +262,6 @@ app.get('/events', async (req, res) => {
     const endDateTime = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, -5) + 'Z';
     console.log(startDateTime);
     console.log(endDateTime);
-
 
     let apikey = process.env.TICKET_API;
     let city = 'seattle';
@@ -359,7 +341,6 @@ app.get('/events', async (req, res) => {
     res.status(500).send({ message: 'An error occurred' });
   }
 });
-
 
 
 app.listen(3000, () => {
