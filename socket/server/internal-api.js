@@ -2,10 +2,10 @@
 
 const router = require('express').Router();
 
-const { users, roles } = require('../models');
+const { users, roles } = require('./models');
 console.log('🚀 ~ file: authRouter.js:7 ~ users', users);
 
-const bearerAuth = require('./middleware/bearer');
+const bearerAuth = require('./auth/middleware/bearer');
 
 router.route('/users')
   .get(bearerAuth, handleGetUsers)
