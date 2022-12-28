@@ -82,7 +82,8 @@ module.exports = (socket, SERVER) => async function authPrompt() {
       console.log('Invalid Login\n\n');
       return authPrompt();
     }
-    return { rooms: response.data, username };
+    console.log(response.data);
+    return response.data;
   }
   if(authRoute === 'signup') {
     const body = {};
@@ -96,7 +97,7 @@ module.exports = (socket, SERVER) => async function authPrompt() {
     console.log(body);
     try {
       const response = await axios.post(`${SERVER}/signup`, body);
-
+      return response.data;
     } catch(e) {
       console.log(e.message);
       return authPrompt();

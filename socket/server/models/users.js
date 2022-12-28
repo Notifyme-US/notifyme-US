@@ -13,8 +13,8 @@ const userModel = (db, DataTypes) => {
       type: DataTypes.STRING,
       required: true,
     },
-    roles: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    role: {
+      type: DataTypes.STRING,
       required: true,
     },
     name: {
