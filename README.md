@@ -60,6 +60,8 @@ Stretch Goals:
 
 ![UML](./assets/UML.png)
 
+[Trello Board](https://trello.com/b/UkFI8VZF/project-board)
+
 ### Create your Pitch
 
 ## Notifyme-US
@@ -238,4 +240,3 @@ Will you be using a PR review workflow? If so, consider:
   How will you communicate that it’s time to merge?
 
   * Constant open communication/ Standups.
-
