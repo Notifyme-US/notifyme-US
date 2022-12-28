@@ -4,9 +4,12 @@ require('dotenv').config();
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const authRouter = require('./auth/authRouter');
-const { db } = require('./models/index');
 const cors = require('cors');
+
+const authRouter = require('./auth/authRouter');
+const internalRouter = require('./internal-api');
+// const externalRouter = require('./external-api');
+const { db } = require('./models/index');
 
 const PORT = process.env.PORT || 3002;
 
@@ -65,7 +68,14 @@ chat.on('connection', socket => {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(authRouter);
+app.use('/internal', internalRouter);
+// app.use('/api', externalRouter);
+
+app.get('/', (req, res) => {
+  res.status(200).send('Proof of life.');
+});
 
 db.sync().then(() => {
   httpServer.listen(PORT, () => {

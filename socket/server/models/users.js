@@ -1,6 +1,9 @@
 'use stric';
 
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const SECRET = process.env.SECRET || 'CMS-SECRET';
 
 const userModel = (db, DataTypes) => {
   const model = db.define('Users', {
@@ -33,6 +36,15 @@ const userModel = (db, DataTypes) => {
       type: DataTypes.STRING,
       required: true,
     },
+    token: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return jwt.sign({ username: this.username }, SECRET);
+      },
+      set(tokenObj) {
+        return jwt.sign(tokenObj, SECRET);
+      },
+    },
   });
 
   model.beforeCreate( async (user) => {
@@ -51,6 +63,18 @@ const userModel = (db, DataTypes) => {
       return user;
     }
     throw new Error('Invalid User');
+  };
+
+  model.authToken = async function (token)  {
+    console.log(token);
+    const parsedToken = jwt.verify(token, SECRET);
+    console.log(parsedToken);
+    const user = this.findOne({where: { username: parsedToken.username}});
+    console.log(user);
+    if(user) {
+      return user;
+    }
+    throw new Error('User Not Found');
   };
 
   return model;

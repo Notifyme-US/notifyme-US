@@ -2,25 +2,25 @@ module.exports = [
   {
     path: '/users',
     acl: {
-      Instructor: ['create', 'read', 'update', 'delete'],
-      TA: ['create', 'read', 'update', 'delete'],
-      Student: ['create', 'read', 'update', 'delete'],
+      admin: ['create', 'read', 'update', 'delete'],
+      mod: ['read', 'update'],
+      member: [],
     },
   },
   {
-    path: '/assignments',
+    path: '/roles',
     acl: {
-      Instructor: ['create', 'read', 'update', 'delete'],
-      TA: ['read', 'update'],
-      Student: [],
+      admin: ['create', 'read', 'update', 'delete'],
+      mod: ['create', 'read'],
+      member: [],
     },
   },
   {
-    path: '/submissions',
+    path: '/rooms',
     acl: {
-      Instructor: ['create', 'read', 'update', 'delete'],
-      TA: ['read', 'update'],
-      Student: ['create', 'read'],
+      admin: ['create', 'read', 'update', 'delete'],
+      mod: ['read'],
+      member: [],
     },
   },
 ];
