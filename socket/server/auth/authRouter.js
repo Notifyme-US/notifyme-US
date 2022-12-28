@@ -17,9 +17,11 @@ async function handleSignup(req, res, next) {
   try {
     const userInfo = req.body;
     userInfo.role = 'member';
+    console.log('helllooooooo---------------', userInfo);
     const user = await users.create(userInfo);
     console.log('🚀 ~ file: authRouter.js:21 ~ handleSignup ~ user', user);
     const userRole = await roles.findOne({ where: { name: user.role } });
+    console.log(userRole);
     const rooms = userRole.rooms;
     const output = {
       rooms,
