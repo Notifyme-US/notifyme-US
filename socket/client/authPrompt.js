@@ -66,12 +66,12 @@ module.exports = (socket, SERVER) => async function authPrompt() {
 
   //signin logic
   const authAnswers = await inquirer.prompt(auth[authRoute]);
-  console.log('🚀 ~ file: authPrompt.js:68 ~ authPrompt ~ authAnswers', authAnswers);
+  // console.log('🚀 ~ file: authPrompt.js:68 ~ authPrompt ~ authAnswers', authAnswers);
   const { username, password } = authAnswers;
 
   if(authRoute === 'signin') {
     const encoded = base64.encode(`${username}:${password}`);
-    console.log('🚀 ~ file: authPrompt.js:65 ~ authPrompt ~ encoded', encoded);
+    // console.log('🚀 ~ file: authPrompt.js:65 ~ authPrompt ~ encoded', encoded);
     const response = await axios.post(`${SERVER}/signin`,{}, {
       headers: {
         Authorization: `Basic ${encoded}`,
@@ -82,7 +82,8 @@ module.exports = (socket, SERVER) => async function authPrompt() {
       console.log('Invalid Login\n\n');
       return authPrompt();
     }
-    return { rooms: response.data, username };
+    console.log(response.data);
+    return response.data;
   }
   if(authRoute === 'signup') {
     const body = {};
@@ -93,10 +94,10 @@ module.exports = (socket, SERVER) => async function authPrompt() {
       }
     });
 
-    console.log(body);
+    // console.log(body);
     try {
       const response = await axios.post(`${SERVER}/signup`, body);
-
+      return response.data;
     } catch(e) {
       console.log(e.message);
       return authPrompt();

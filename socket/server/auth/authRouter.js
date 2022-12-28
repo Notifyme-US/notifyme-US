@@ -3,32 +3,44 @@
 const express = require('express');
 const authRouter = express.Router();
 
-const { users } = require('../models');
+const { users, roles } = require('../models');
 console.log('🚀 ~ file: authRouter.js:7 ~ users', users);
 
 const basicAuth = require('./middleware/basic');
+const bearerAuth = require('./middleware/bearer');
 
 authRouter.post('/signup', handleSignup);
 authRouter.post('/signin', basicAuth, handleSignin);
-authRouter.get('/users', handleGetUsers);
+authRouter.get('/users', bearerAuth, handleGetUsers);
 
 async function handleSignup(req, res, next) {
   try {
     const userInfo = req.body;
-    userInfo.roles = ['member'];
+    userInfo.role = 'member';
     const user = await users.create(userInfo);
     console.log('🚀 ~ file: authRouter.js:21 ~ handleSignup ~ user', user);
-    res.status(201).json(user);
+    const userRole = await roles.findOne({ where: { name: user.role } });
+    const rooms = userRole.rooms;
+    const output = {
+      rooms,
+      username: user.username,
+    };
+    res.status(201).json(output);
   } catch (e) {
     next(e);
   }
 }
 
 async function handleSignin(req, res, next) {
-  const output = {user: req.user, token: req.user.token};
   console.log('handle signin');
+  const { user } = req;
+  const userRole = await roles.findOne({ where: { name: user.role } });
+  const rooms = userRole.rooms;
+  const output = {
+    rooms,
+    username: user.username,
+  };
   res.status(200).json(output);
-  // console.log('hello-----------------', output);
 }
 
 async function handleGetUsers(req, res, next) {
