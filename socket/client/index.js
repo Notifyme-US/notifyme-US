@@ -11,6 +11,7 @@ console.log('🚀 ~ file: index.js:10 ~ SERVER', SERVER);
 const socket = io(`${SERVER}/chat`);
 
 const authPrompt = require('./authPrompt')(socket, SERVER);
+const roomPrompt = require('./roomPrompt')(socket, SERVER);
 console.log('------------');
 
 const session = {};
@@ -108,23 +109,4 @@ async function messenger() {
   }
   socket.emit('MESSAGE', payload);
   messenger();
-}
-
-
-async function roomPrompt(roomChoices) {
-
-
-  const rooms = [
-    {
-      type: 'list',
-      name: 'room',
-      message: 'Which room would you like to join?',
-      choices: roomChoices,
-    },
-  ];
-
-  const answers = await inquirer.prompt(rooms);
-  const room = answers.room;
-
-  return room;
 }
