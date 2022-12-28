@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const inquirer = require('inquirer');
 
 const local = true;
-const SERVER = local ? process.env.SERVER_LOCAL : process.env.SERVER;
+const SERVER = local ? process.env.SERVER_LOCAL : process.env.SERVER_DEPLOYED;
 console.log('🚀 ~ file: index.js:10 ~ SERVER', SERVER);
 const socket = io(`${SERVER}/chat`);
 
