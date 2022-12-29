@@ -2,9 +2,8 @@
 
 it('displays forecast')
 
-  
-
-  return `The weather forecast for the next 5 days in ${data[0].city} from NotifyMe-US:
+ expects //--
+  `The weather forecast for the next 5 days in ${data[0].city} from NotifyMe-US:
   ${dates[0].toLocaleDateString()}: ${data[0].temp} °F with ${data[0].weather}
   ${dates[1].toLocaleDateString()}: ${data[1].temp} °F with ${data[1].weather}
   ${dates[2].toLocaleDateString()}: ${data[2].temp} °F with ${data[2].weather}
@@ -29,6 +28,6 @@ it('gets forecast')
 it('gets eventlist properly')
 
 
-expect ->
+expects //--
 
       eventList += `${eventName} at ${venue} on ${eventStartDate} at ${newTime}, Link: ${eventUrl}`;
