@@ -77,8 +77,9 @@ chat.on('connection', socket => {
 
   socket.on('TRAFFIC', async payload => {
     try {
+      console.log(payload);
       const traffic = await getTraffic(payload.firstAddress, payload.secondAddress );
-      const text = displayTraffic(traffic);
+      const text = displayTraffic(traffic, payload);
       socket.emit('API_RESULT', text);
     } catch(e) {
       console.log(e);
@@ -89,6 +90,8 @@ chat.on('connection', socket => {
     try {
       console.log(payload);
       const event = await getEvents(payload.cityName, payload.state);
+
+      // console.log(payload);
       // TODO add check for null result
 
       socket.emit('API_RESULT', event);
