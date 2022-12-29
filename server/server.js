@@ -42,7 +42,6 @@ chat.on('connection', socket => {
     console.log('🚀 ~ file: index.js:27 ~ username', username);
     payload.username = username;
     socket.to(room).emit('MESSAGE', payload);
-    // socket.emit('MESSAGE', payload);
 
     const dt = dtf.format(new Date());
     payload.received = `Message received by server at ${dt}`;
@@ -89,8 +88,12 @@ chat.on('connection', socket => {
 
   socket.on('EVENTS', async payload => {
     try {
+      console.log(payload);
       const event = await getEvents(payload.cityName, payload.state);
+
       // console.log(payload);
+      // TODO add check for null result
+
       socket.emit('API_RESULT', event);
     } catch(e) {
       console.log(e);
@@ -100,8 +103,7 @@ chat.on('connection', socket => {
 
   socket.on('SUBSCRIBE', async payload => {
     try {
-      // payload is { username, type }
-      const newSub = await subs.create(payload);
+      const newSub = await subs.create(payload); // payload : { username, type }
       console.log(newSub);
       socket.emit('API_RESULT', 'subscription successful');
     } catch(e) {

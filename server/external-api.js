@@ -129,15 +129,11 @@ const getTraffic = async (firstAddress, secondAddress) => {
 
     const latLonOne = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/address/${addressOne}.json?types=address%2Cplace&access_token=${token}&country=us`);
 
-
     const latLonTwo = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/address/${addressTwo}.json?access_token=${token}&country=us`);
-
 
     let addressOneCoor = latLonOne.data.features[0].center;
     let addressTwoCoor = latLonTwo.data.features[0].center;
-
     let coordinates = `${addressOneCoor[0]},${addressOneCoor[1]};${addressTwoCoor[0]},${addressTwoCoor[1]}`;
-
 
     const response = await axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${coordinates}?geometries=polyline&overview=simplified&steps=true&access_token=${token}`);
 
@@ -170,7 +166,6 @@ const getTraffic = async (firstAddress, secondAddress) => {
 
 const getEvents = async (cityName, state) => {
   try {
-
     const currentDate = new Date();
     const startDateTime = currentDate.toISOString().slice(0, -5) + 'Z';
 
@@ -179,19 +174,11 @@ const getEvents = async (cityName, state) => {
     console.log(state);
 
 
-
     let apikey = process.env.TICKET_API;
 
 
     let radius = '20';
     let unit = 'miles';
-
-
-
-
-
-
-
 
 
     const response = await axios.get(
@@ -212,7 +199,6 @@ const getEvents = async (cityName, state) => {
       if (hoursFix >= 12) {
 
         hoursFix -= 12;
-
 
         time = `${hoursFix.toString().padStart(2, '0')}:${minutesFix
           .toString()
@@ -241,14 +227,11 @@ const getEvents = async (cityName, state) => {
       eventList += `\n ${eventName} at ${venue} \n ${eventStartDate} at ${newTime} \n Link: ${eventUrl}\n \n`;
     }
 
-
-
     return eventList;
   } catch (error) {
     console.error(error);
   }
 };
-
 
 
 module.exports = {
