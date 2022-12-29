@@ -78,8 +78,9 @@ chat.on('connection', socket => {
 
   socket.on('TRAFFIC', async payload => {
     try {
+      console.log(payload);
       const traffic = await getTraffic(payload.firstAddress, payload.secondAddress );
-      const text = displayTraffic(traffic);
+      const text = displayTraffic(traffic, payload);
       socket.emit('API_RESULT', text);
     } catch(e) {
       console.log(e);
@@ -89,7 +90,7 @@ chat.on('connection', socket => {
   socket.on('EVENTS', async payload => {
     try {
       const event = await getEvents(payload.cityName, payload.state);
-
+      // console.log(payload);
       socket.emit('API_RESULT', event);
     } catch(e) {
       console.log(e);

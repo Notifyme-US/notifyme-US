@@ -4,12 +4,12 @@ require('dotenv').config();
 function displayForecast(forecast) {
   const { data, dates } = forecast;
 
-  return `The weather forecast for the next 5 days in ${data[0].city} from NotifyMe-US:
+  return `\n \n The weather forecast for the next 5 days in ${data[0].city} \n
   ${dates[0].toLocaleDateString()}: ${data[0].temp} °F with ${data[0].weather}
   ${dates[1].toLocaleDateString()}: ${data[1].temp} °F with ${data[1].weather}
   ${dates[2].toLocaleDateString()}: ${data[2].temp} °F with ${data[2].weather}
   ${dates[3].toLocaleDateString()}: ${data[3].temp} °F with ${data[3].weather}
-  ${dates[4].toLocaleDateString()}: ${data[4].temp} °F with ${data[4].weather}`;
+  ${dates[4].toLocaleDateString()}: ${data[4].temp} °F with ${data[4].weather} \n`;
 }
 
 const getCurrentWeather = async (zip) => {
@@ -53,7 +53,7 @@ const getCurrentWeather = async (zip) => {
 function displayCurrent(output) {
   const { town, weather, fahrenheitRoundedHigh, fahrenheitRoundedLow, humidity, windMphFormatted, cloudCoverage } = output;
 
-  return `The weather in ${town} is currently ${weather}. The high temperature for today will be ${fahrenheitRoundedHigh} degrees Fahrenheit, and the low temperature will be ${fahrenheitRoundedLow} degrees Fahrenheit. The humidity will be ${humidity}%, and the wind speed will be ${windMphFormatted} mph. There will be ${cloudCoverage}% cloud coverage." `;
+  return `\n \n The weather in ${town} is currently ${weather}. \n \n The high temperature for today will be ${fahrenheitRoundedHigh} degrees Fahrenheit,\n and the low temperature will be ${fahrenheitRoundedLow} degrees Fahrenheit. \n \nThe humidity will be ${humidity}%, and the wind speed will be ${windMphFormatted} mph.\n There will be ${cloudCoverage}% cloud coverage." \n \n`;
 }
 
 
@@ -106,14 +106,15 @@ const getForecast = async (zip) => {
   }
 };
 
-const displayTraffic = function(traffic) {
-  const {duration, totalDistance, listRoute} = traffic;
+const displayTraffic = function (traffic, payload) {
+  const { duration, totalDistance, listRoute } = traffic;
+  const { firstAddress, secondAddress } = payload;
 
-  return `Your Daily Commute from NotifyMe-US for ${new Date().toLocaleDateString()}
+  return `\n Your traffic Info from ${firstAddress} to ${secondAddress} on ${new Date().toLocaleDateString()} \n \n
   Total distance: ${totalDistance} miles
-  Total duration: ${duration} minutes,
+  Total duration: ${duration} minutes
 
-  Best Route:
+  This is Our Recommend Route: \n
   ${listRoute}`;
 };
 
@@ -174,19 +175,29 @@ const getEvents = async (cityName, state) => {
     const startDateTime = currentDate.toISOString().slice(0, -5) + 'Z';
 
     const endDateTime = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, -5) + 'Z';
-    console.log(startDateTime);
-    console.log(endDateTime);
+    console.log(cityName);
+    console.log(state);
+
 
 
     let apikey = process.env.TICKET_API;
-    let city = cityName;
-    let stateCode = state;
+
+
     let radius = '20';
     let unit = 'miles';
 
 
+
+
+
+
+
+
+
     const response = await axios.get(
-      `https://app.ticketmaster.com/discovery/v2/events.json?size=5&apikey=${apikey}&startDateTime=${startDateTime}&endDateTime=${endDateTime}&city=${city}&radius=${radius}&unit=${unit}&stateCode=${stateCode}`);
+      `https://app.ticketmaster.com/discovery/v2/events.json?size=5&apikey=${apikey}&startDateTime=${startDateTime}&endDateTime=${endDateTime}&city=${cityName}&radius=${radius}&unit=${unit}&stateCode=${state}`);
+
+
 
     const concerts = response.data;
 
@@ -227,7 +238,7 @@ const getEvents = async (cityName, state) => {
       const eventStartDate = eventDate.start.localDate;
       const newTime = toStandardTime(eventStartTime);
 
-      eventList += `${eventName} at ${venue} on ${eventStartDate} at ${newTime}, Link: ${eventUrl}`;
+      eventList += `\n ${eventName} at ${venue} \n ${eventStartDate} at ${newTime} \n Link: ${eventUrl}\n \n`;
     }
 
 
