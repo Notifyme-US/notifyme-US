@@ -8,8 +8,8 @@ const cors = require('cors');
 
 const authRouter = require('./auth/authRouter');
 const internalRouter = require('./internal-api');
-// const externalRouter = require('./external-api');
-const { db } = require('./models/index');
+const { getCurrentWeather, getForecast, displayForecast } = require('./external-api');
+const { db, subs } = require('./models/index');
 
 const PORT = process.env.PORT || 3002;
 
@@ -55,6 +55,27 @@ chat.on('connection', socket => {
     socket.broadcast.emit('TYPING', username);
   });
 
+  socket.on('WEATHER', async payload => {
+    try {
+      const forecast = await getForecast(payload.zip);
+      const text = displayForecast(forecast);
+      socket.emit('API_RESULT', text);
+    } catch(e) {
+      console.log(e);
+    }
+  });
+
+  socket.on('SUBSCRIBE', async payload => {
+    try {
+      // payload is { username, type }
+      const newSub = await subs.create(payload);
+      console.log(newSub);
+      socket.emit('API_RESULT', 'subscription successful');
+    } catch(e) {
+      console.log(e);
+    }
+  });
+
   socket.on('disconnect', reason => {
     console.log('client disconnected');
     if(users[socket.id]) {
@@ -71,7 +92,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(authRouter);
 app.use('/internal', internalRouter);
-// app.use('/api', externalRouter);
 
 app.get('/', (req, res) => {
   res.status(200).send('Proof of life.');

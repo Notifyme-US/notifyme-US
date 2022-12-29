@@ -23,15 +23,6 @@ socket.on('connect', async () => {
   session.username = username;
   session.roomList = rooms;
 
-  // ! Do something here to get rooms from RBAC
-
-  // const roomChoices = [
-  //   'general chat',
-  //   'questions',
-  //   'support',
-  //   'commands',
-  // ];
-
   session.room = await roomPrompt(session.roomList);
 
   socket.emit('JOIN', {
@@ -71,6 +62,10 @@ socket.on('disconnect', () => {
   process.exit();
 });
 
+socket.on('API_RESULT', payload => {
+  console.log(payload);
+});
+
 
 
 async function messenger() {
@@ -91,17 +86,28 @@ async function messenger() {
 
   const re = /^!(?!!)/;
   if(re.test(input)) {
-    const parsed = input.match(/[a-zA-Z0-9]+/g); // !seattle 06807
+    const parsed = input.match(/[a-zA-Z0-9]+/g);
     const cmd = parsed[0].toLowerCase();
-    const arg = parsed.length > 1 ? parsed[1] : 'seattle'; // !replace 'seattle' with dynamically pulled user location
+    const arg = parsed.length > 1 ? parsed[1] : '98034'; // TODO replace '98034' with dynamically pulled user location
     if (cmd === 'weather') {
-      socket.emit('WEATHER', arg);
+      socket.emit('WEATHER', { zip: arg });
     }
     if (cmd === 'traffic') {
       socket.emit('TRAFFIC', arg);
     }
     if (cmd === 'events') {
       socket.emit('EVENTS', arg);
+    }
+    if (cmd === 'subscribe') {
+      const options = ['weather', 'events'];
+      if(!options.includes(arg)) {
+        console.log('error: not an option for subscription');
+        return messenger();
+      }
+      socket.emit('SUBSCRIBE', {
+        username: session.username,
+        type: arg,
+      });
     }
     if (cmd === 'back') {
       return roomPrompt(session.roomList);
