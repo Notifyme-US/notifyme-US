@@ -1,4 +1,4 @@
-'use stric';
+'use strict';
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -10,6 +10,7 @@ const userModel = (db, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       required: true,
+      primaryKey: true,
       unique: true,
     },
     password: {

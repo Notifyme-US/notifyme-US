@@ -1,4 +1,4 @@
-'use stric';
+'use strict';
 
 const rolesModel = (db, DataTypes) => {
   const model = db.define('Roles', {
