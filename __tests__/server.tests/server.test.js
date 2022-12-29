@@ -1,8 +1,8 @@
-const { app } = require('../server');
+const { app } = require('../../../../server');
 const supertest = require('supertest');
 const request = supertest(app);
 
-describe('API Server', () => {
+describe('Server', () => {
   it('handles root path', async () => {
     const response = await request.get('/');
 
