@@ -11,7 +11,7 @@ const internalRouter = require('./internal-api');
 const { getCurrentWeather, getForecast, displayForecast } = require('./external-api');
 const { db, subs } = require('./models/index');
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 const httpServer = createServer(app);
@@ -98,10 +98,8 @@ app.get('/', (req, res) => {
 });
 
 
-module.exports = async () => {
-  db.sync().then(() => {
-    httpServer.listen(PORT, () => {
-      console.log(`listening on port: ${PORT}`);
-    });
+db.sync().then(() => {
+  httpServer.listen(PORT, () => {
+    console.log(`listening on port: ${PORT}`);
   });
-};
+});
