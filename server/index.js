@@ -97,8 +97,11 @@ app.get('/', (req, res) => {
   res.status(200).send('Proof of life.');
 });
 
-db.sync().then(() => {
-  httpServer.listen(PORT, () => {
-    console.log(`listening on port: ${PORT}`);
+
+module.exports = async () => {
+  db.sync().then(() => {
+    httpServer.listen(PORT, () => {
+      console.log(`listening on port: ${PORT}`);
+    });
   });
-});
+};
