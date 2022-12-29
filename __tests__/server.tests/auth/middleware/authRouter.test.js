@@ -1,7 +1,9 @@
 'use strict';
 
-const { server } = require('../src/server');
-const { db } = require('../src/models');
+// const { server } = require('../src/server');
+const { server } = require('../../../../server/server.js');
+// const { db } = require('../src/models');
+const { db } = require('../../../../server/models');
 const supertest = require('supertest');
 const request = supertest(server);
 
@@ -28,7 +30,6 @@ describe('Auth Tests', () => {
     expect(response.status).toBe(201);
     expect(response.body.user.username).toEqual('testUser');
     expect(response.body.user.password).toBeTruthy();
-    // expect(response.body.user.password).toEqual('pass123');
     expect(response.body.user.password).not.toEqual('pass');
   });
 
