@@ -37,6 +37,14 @@ const userModel = (db, DataTypes) => {
       type: DataTypes.STRING,
       required: true,
     },
+    city: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    state: {
+      type: DataTypes.STRING,
+      required: true,
+    },
     token: {
       type: DataTypes.VIRTUAL,
       get() {
