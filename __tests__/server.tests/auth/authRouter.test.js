@@ -1,12 +1,10 @@
 'use strict';
 
-// const { server } = require('../src/server');
-const { server } = require('../../../../server/server.js');
-// const { db } = require('../src/models');
-const { db } = require('../../../../server/models');
+
+const { server } = require('../../server');
+const { db } = require('../../server/models');
 const supertest = require('supertest');
 const request = supertest(server);
-
 
 beforeAll( async () => {
   await db.sync();
