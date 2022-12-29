@@ -142,7 +142,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-config/config.json
+config.json
 
 # End of https://www.gitignore.io/api/vim,osx,node,linux,windows
 
