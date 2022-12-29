@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const authRouter = require('./auth/authRouter');
 const internalRouter = require('./internal-api');
-const { getCurrentWeather, getForecast, displayForecast } = require('./external-api');
+const { getCurrentWeather, getForecast, displayForecast, getTraffic, getEvents, displayTraffic, displayCurrent } = require('./external-api');
 const { db, subs } = require('./models/index');
 
 const PORT = process.env.PORT || 3002;
@@ -64,6 +64,38 @@ chat.on('connection', socket => {
       console.log(e);
     }
   });
+
+  socket.on('CURRENT_WEATHER', async payload => {
+    try {
+      const current = await getCurrentWeather(payload.zip);
+      const text = displayCurrent(current);
+      socket.emit('API_RESULT', text);
+    } catch(e) {
+      console.log(e);
+    }
+  });
+
+
+  socket.on('TRAFFIC', async payload => {
+    try {
+      const traffic = await getTraffic(payload.firstAddress, payload.secondAddress );
+      const text = displayTraffic(traffic);
+      socket.emit('API_RESULT', text);
+    } catch(e) {
+      console.log(e);
+    }
+  });
+
+  socket.on('EVENTS', async payload => {
+    try {
+      const event = await getEvents(payload.cityName, payload.state);
+
+      socket.emit('API_RESULT', event);
+    } catch(e) {
+      console.log(e);
+    }
+  });
+
 
   socket.on('SUBSCRIBE', async payload => {
     try {
