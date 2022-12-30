@@ -11,7 +11,7 @@ const internalRouter = require('./internal-api');
 const { getCurrentWeather, getForecast, displayForecast, getTraffic, getEvents, displayTraffic, displayCurrent } = require('./external-api');
 const { db, subs } = require('./models/index');
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3002;
 
 const app = express();
 const httpServer = createServer(app);
@@ -37,6 +37,12 @@ chat.on('connection', socket => {
     socket.emit(`Welcome, ${username}`);
   });
 
+  socket.on('LEAVE', payload => {
+    const { username, room } = users[socket.id];
+    socket.leave(room);
+    socket.to(room).emit('NEW_LEAVE', `${username} has left the room`);
+  });
+
   socket.on('MESSAGE', payload => { //payload = {content: string}
     const { username, room } = users[socket.id];
     console.log('🚀 ~ file: index.js:27 ~ username', username);
@@ -48,11 +54,10 @@ chat.on('connection', socket => {
     socket.emit('RECEIVED', payload);
   });
 
-
-  socket.on('TYPING', payload => { //payload = null
-    const username = users[socket.id];
-    socket.broadcast.emit('TYPING', username);
-  });
+  // socket.on('TYPING', payload => { //payload = null
+  //   const username = users[socket.id];
+  //   socket.broadcast.emit('TYPING', username);
+  // });
 
   socket.on('WEATHER', async payload => {
     try {
@@ -74,7 +79,6 @@ chat.on('connection', socket => {
     }
   });
 
-
   socket.on('TRAFFIC', async payload => {
     try {
       console.log(payload);
@@ -90,11 +94,11 @@ chat.on('connection', socket => {
     try {
       console.log(payload);
       const event = await getEvents(payload.cityName, payload.state);
-
-      // console.log(payload);
-      // TODO add check for null result
-
-      socket.emit('API_RESULT', event);
+      if (!event) {
+        socket.emit('API_RESULT', 'No upcoming events in your area...');
+      } else {
+        socket.emit('API_RESULT', event);
+      }
     } catch(e) {
       console.log(e);
     }
@@ -116,8 +120,8 @@ chat.on('connection', socket => {
       const byeSub = await subs.destroy({
         where: {
           username: payload.username,
-          type: payload.type
-        }
+          type: payload.type,
+        },
       });
       console.log(byeSub);
       socket.emit('API_RESULT', `unsubscribed from ${payload.type}`);
@@ -131,7 +135,7 @@ chat.on('connection', socket => {
     console.log('client disconnected');
     if(users[socket.id]) {
       const { username, room } = users[socket.id];
-      socket.to(room).emit('LEAVE', `${username} has left the room`);
+      socket.to(room).emit('NEW_LEAVE', `${username} has left the room`);
       delete users[socket.id];
     }
   });
@@ -149,8 +153,13 @@ app.get('/', (req, res) => {
 });
 
 
-db.sync().then(() => {
+const start = async () => db.sync().then(() => {
   httpServer.listen(PORT, () => {
     console.log(`listening on port: ${PORT}`);
   });
 });
+
+module.exports = {
+  server: app,
+  start,
+};

@@ -1,11 +1,11 @@
 {
   "name": "notifyme-us",
   "version": "1.0.0",
-  "description": "Notification messaging service",
-  "main": "server/server.js",
+  "description": "Notification and messaging service",
+  "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --coverage",
-    "start": "node server/server.js",
+    "test": "NODE_ENV=test && jest --verbose --coverage",
+    "start": "node index.js",
     "db:config": "sequelize init:config",
     "db:create": "sequelize db:create",
     "db:seed": "sequelize db:seed:all"
@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Notifyme-US/notifyme-US/issues"
   },

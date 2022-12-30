@@ -7,11 +7,11 @@ const { users, roles } = require('../models');
 console.log('🚀 ~ file: authRouter.js:7 ~ users', users);
 
 const basicAuth = require('./middleware/basic');
-const bearerAuth = require('./middleware/bearer');
+// const bearerAuth = require('./middleware/bearer');
 
 authRouter.post('/signup', handleSignup);
 authRouter.post('/signin', basicAuth, handleSignin);
-authRouter.get('/users', bearerAuth, handleGetUsers);
+// authRouter.get('/users', bearerAuth, handleGetUsers);
 
 async function handleSignup(req, res, next) {
   try {
@@ -45,10 +45,10 @@ async function handleSignin(req, res, next) {
   res.status(200).json(output);
 }
 
-async function handleGetUsers(req, res, next) {
-  const results = await users.findAll({});
-  const list = results.map(user => user.username);
-  res.status(200).json(list);
-}
+// async function handleGetUsers(req, res, next) {
+//   const results = await users.findAll({});
+//   const list = results.map(user => user.username);
+//   res.status(200).json(list);
+// }
 
 module.exports = authRouter;

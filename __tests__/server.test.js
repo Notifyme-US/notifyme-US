@@ -1,14 +1,14 @@
-const { app } = require('../../server');
+const { server } = require('../server/server');
 const supertest = require('supertest');
-const request = supertest(app);
+const request = supertest(server);
 
-describe('API Server', () => {
+describe('Server', () => {
   it('handles root path', async () => {
     const response = await request.get('/');
 
     expect(response.status).toBe(200);
     expect(response.text).toBeTruthy();
-    expect(response.text).toEqual('Hello World!!!');
+    expect(response.text).toEqual('Proof of life.');
   });
 
   it('handles invalid requests', async () => {
@@ -16,9 +16,4 @@ describe('API Server', () => {
     expect(response.status).toEqual(404);
   });
 
-  it('handles errors', async () => {
-    const response = await request.get('/bad');
-    expect(response.status).toEqual(500);
-    expect(response.body.route).toEqual('/bad');
-  });
 });

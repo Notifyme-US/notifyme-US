@@ -1,7 +1,6 @@
 'use strict';
 
-
-const { server } = require('../../server');
+const { server } = require('../../server/server');
 const { db } = require('../../server/models');
 const supertest = require('supertest');
 const request = supertest(server);
@@ -14,21 +13,25 @@ afterAll( async () => {
   await db.drop();
 });
 
-let token;
-let user;
-
 describe('Auth Tests', () => {
   it('allows user to signup with a POST to the /signup route', async () => {
-    let response = await request.post('/signup').send(
-      {
-        username: 'testUser',
-        password: 'pass',
-        role: 'Instructor',
-      });
+    let response = await request.post('/signup').send({
+      username: 'testUser',
+      password: 'pass',
+      name: 'tester',
+      email: 'test@test.com',
+      phone: '800 867 5309',
+      city: 'testville',
+      state: 'TS',
+      zip: '10101',
+    });
+    const { user } = response.body;
     expect(response.status).toBe(201);
-    expect(response.body.user.username).toEqual('testUser');
-    expect(response.body.user.password).toBeTruthy();
-    expect(response.body.user.password).not.toEqual('pass');
+    expect(user.username).toEqual('testUser');
+    expect(user.password).toBeTruthy();
+    expect(user.password).not.toEqual('pass');
+    expect(user.token).toBeTruthy();
+    expect(user.role).toEqual('member');
   });
 
   it('allows user to signin with a POST to the /signin route', async () => {
