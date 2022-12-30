@@ -111,6 +111,22 @@ chat.on('connection', socket => {
     }
   });
 
+  socket.on('UNSUBSCRIBE', async payload => {
+    try {
+      const byeSub = await subs.destroy({
+        where: {
+          username: payload.username,
+          type: payload.type
+        }
+      });
+      console.log(byeSub);
+      socket.emit('API_RESULT', `unsubscribed from ${payload.type}`);
+    } catch(e) {
+      console.log(e);
+    }
+  });
+
+
   socket.on('disconnect', reason => {
     console.log('client disconnected');
     if(users[socket.id]) {
