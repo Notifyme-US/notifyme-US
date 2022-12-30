@@ -1,19 +1,32 @@
 'use strict';
 
-const basicAuth = require('../../../../server/auth/middleware/basic');
-const { db, users } = require('../../../../server/models');
+const { users } = require('../../../server/models');
+const basicAuth = require('../../../server/auth/middleware/basic');
 
+let testUser;
 
 beforeAll(async () => {
-  await db.sync();
-  await users.create({
-    username: 'testUser',
-    password: 'pass',
-  });
+  try {
+    await users.sync();
+    testUser = await users.create({
+      username: 'testUser',
+      password: 'pass',
+      name: 'tester',
+      email: 'test@test.com',
+      phone: '800 867 5309',
+      city: 'testville',
+      state: 'TS',
+      zip: '10101',
+    });
+  } catch (error) {
+    console.log(error.message);
+    return;
+  }
+  console.log(testUser);
 });
 
 afterAll(async () => {
-  await db.drop();
+  await users.drop();
 });
 
 describe('Basic auth middleware', () => {
@@ -25,6 +38,7 @@ describe('Basic auth middleware', () => {
     };
     let res = {
       status: jest.fn(),
+      send: jest.fn(),
     };
     let next = jest.fn();
     await basicAuth(req, res, next);
@@ -37,7 +51,9 @@ describe('Basic auth middleware', () => {
         authorization: 'Basic dGVzdFVzZXI6cGFzcw==',
       },
     };
-    let res = {};
+    let res = {
+      send: jest.fn(),
+    };
     let next = jest.fn();
 
     await basicAuth(req, res, next);

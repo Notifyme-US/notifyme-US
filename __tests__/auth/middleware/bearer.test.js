@@ -1,20 +1,32 @@
 'use strict';
 
-const bearerAuth = require('../../../../server/auth/middleware/bearer');
-
-const { db, users } = require('../../../../server/models');
+const { users } = require('../../../server/models');
+const bearerAuth = require('../../../server/auth/middleware/bearer');
 
 let testUser;
+
 beforeAll(async () => {
-  await db.sync();
-  testUser = await users.create({
-    username: 'testUser',
-    password: 'pass',
-  });
+  try {
+    await users.sync();
+    testUser = await users.create({
+      username: 'testUser',
+      password: 'pass',
+      name: 'tester',
+      email: 'test@test.com',
+      phone: '800 867 5309',
+      city: 'testville',
+      state: 'TS',
+      zip: '10101',
+    });
+  } catch (error) {
+    console.log(error.message);
+    return;
+  }
+  console.log(testUser);
 });
 
 afterAll(async () => {
-  await db.drop();
+  await users.drop();
 });
 
 describe('Basic auth middleware', () => {

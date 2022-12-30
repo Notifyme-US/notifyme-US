@@ -168,35 +168,21 @@ const getEvents = async (cityName, state) => {
   try {
     const currentDate = new Date();
     const startDateTime = currentDate.toISOString().slice(0, -5) + 'Z';
-
     const endDateTime = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, -5) + 'Z';
-
-
 
     let apikey = process.env.TICKET_API;
 
     const city = cityName;
     const cityString = city.split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
 
-
-
-
-
     let radius = '20';
     let unit = 'miles';
-
     let cityEncode = encodeURIComponent(cityString);
-
-
 
     const response = await axios.get(
       `https://app.ticketmaster.com/discovery/v2/events.json?size=5&apikey=${apikey}&startDateTime=${startDateTime}&endDateTime=${endDateTime}&city=${cityEncode}&radius=${radius}&unit=${unit}&stateCode=${state}`);
 
-
-
     const concerts = response.data;
-
-
     const toStandardTime = function (time) {
 
       const [hours, minutes, seconds] = time.split(':');
@@ -244,10 +230,10 @@ const getEvents = async (cityName, state) => {
 
 module.exports = {
   getCurrentWeather,
+  displayCurrent,
   getForecast,
   displayForecast,
   getTraffic,
   displayTraffic,
   getEvents,
-  displayCurrent,
 };
