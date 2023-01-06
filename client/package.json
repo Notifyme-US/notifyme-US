@@ -1,0 +1,31 @@
+{
+  "name": "notifyme-client",
+  "version": "1.2.4",
+  "description": "client-side application for interacting with the notifyme ecosystem",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Notifyme-US/notifyme-client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Notifyme-US/notifyme-client/issues"
+  },
+  "homepage": "https://github.com/Notifyme-US/notifyme-client#readme",
+  "dependencies": {
+    "axios": "^1.2.1",
+    "base-64": "^1.0.0",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.0.3",
+    "inquirer": "^8.2.5",
+    "jest": "^29.3.1",
+    "socket.io-client": "^4.5.4"
+  }
+}
