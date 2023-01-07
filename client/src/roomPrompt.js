@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 
-module.exports = (socket, SERVER, session) => async function roomPrompt() {
+module.exports = (socket, session) => async function roomPrompt() {
   const rooms = [
     {
       type: 'list',
