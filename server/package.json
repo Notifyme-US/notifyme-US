@@ -1,5 +1,5 @@
 {
-  "name": "notifyme-us",
+  "name": "travelio-server",
   "version": "1.0.0",
   "description": "Notification and messaging service",
   "main": "index.js",
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Notifyme-US/notifyme-US.git"
+    "url": "git+https://github.com/julian-barker/travelio.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Notifyme-US/notifyme-US/issues"
+    "url": "https://github.com/julian-barker/travelio/issues"
   },
-  "homepage": "https://github.com/Notifyme-US/notifyme-US#readme",
+  "homepage": "https://github.com/julian-barker/travelio#readme",
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },
