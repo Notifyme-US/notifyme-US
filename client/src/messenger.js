@@ -8,10 +8,10 @@ const messengerCtor = (socket, session, roomPrompt) => (async function messenger
     message: '->',
   }]);
   const { input } = answers;
-  if(input === '\\q') {
+  if(input === '!q') {
     process.exit();
-    return;
   }
+  
   process.stdout.moveCursor(0, -1);
   process.stdout.write('\r\x1b[k');
   const payload = {
