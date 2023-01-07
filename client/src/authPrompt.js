@@ -10,7 +10,7 @@ module.exports = (socket, SERVER) => async function authPrompt() {
         type: 'list',
         name: 'auth',
         message: 'select one...',
-        choices: ['signin', 'signup'],
+        choices: ['signin', 'signup', 'cancel'],
       },
     ],
     signin: [
@@ -76,6 +76,11 @@ module.exports = (socket, SERVER) => async function authPrompt() {
   //signin logic
   const authAnswers = await inquirer.prompt(auth[authRoute]);
   const { username, password } = authAnswers;
+  
+  if(authRoute === 'cancel') {
+    console.log('Bon Voyage!');
+    process.exit();
+  }
 
   if(authRoute === 'signin') {
     try {
@@ -112,7 +117,6 @@ module.exports = (socket, SERVER) => async function authPrompt() {
       console.log(e.message);
       return authPrompt();
     }
-
   }
 
   return username;
