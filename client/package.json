@@ -1,7 +1,7 @@
 {
-  "name": "notifyme-client",
+  "name": "travelio-client",
   "version": "1.2.4",
-  "description": "client-side application for interacting with the notifyme ecosystem",
+  "description": "client-side application for interacting with the travelio server",
   "main": "index.js",
   "bin": "index.js",
   "scripts": {
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Notifyme-US/notifyme-client.git"
+    "url": "git+https://github.com/julian-barker/travelio.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Notifyme-US/notifyme-client/issues"
+    "url": "https://github.com/julian-barker/travelio/issues"
   },
-  "homepage": "https://github.com/Notifyme-US/notifyme-client#readme",
+  "homepage": "https://github.com/julian-barker/travelio#readme",
   "dependencies": {
     "axios": "^1.2.1",
     "base-64": "^1.0.0",
