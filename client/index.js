@@ -17,8 +17,8 @@ const socket = io(`${SERVER}/chat`);
 
 const session = {};
 
-const authPrompt = require('./src/authPrompt')(socket, SERVER);
-const roomPrompt = require('./src/roomPrompt')(socket, SERVER, session);
+const authPrompt = require('./src/authPrompt')(SERVER);
+const roomPrompt = require('./src/roomPrompt')(socket, session);
 const messenger = require('./src/messenger')(socket, session, roomPrompt);
 
 socket.on('connect', async () => {
