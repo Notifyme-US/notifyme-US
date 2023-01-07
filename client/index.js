@@ -6,7 +6,7 @@ require('dotenv').config();
 const { io } = require('socket.io-client');
 const chalk = require('chalk');
 
-console.log('starting client...');
+// console.log('starting client...');
 
 // For testing - use local server
 // const SERVER = process.env.SERVER_LOCAL;
