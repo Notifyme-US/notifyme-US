@@ -1,6 +1,8 @@
 # Travelio
 
-This is a travel-oriented chat service mimicking something close to a discrd server. It is a backend-focused project that uses the command line as the UI.
+This is a travel-oriented chat service mimicking something close to a discord server. It is a backend-focused project that uses the command line as the UI.
+
+** This is a fork of a group project in which I was the primary contributor. [Notifyme-US](https://github.com/Notifyme-US)
 
 ## Author
 
@@ -22,4 +24,4 @@ Trace Dugar
 
 ### Planning
 
-![UML](./assets/UML.png)
+![UML](./server/assets/UML.png)
