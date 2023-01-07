@@ -1,6 +1,6 @@
-### User Stories
+# User Stories
 
-#### 1
+## 1
 
 Title - Location data
 
@@ -12,9 +12,9 @@ Acceptance Tests
 
 * finds location
 * calls API properly
-_ properly retrieves correct data.
+* properly retrieves correct data.
 
-### 2
+## 2
 
 Title chat /messaging
 
@@ -24,7 +24,7 @@ Feature Tasks - proper authorized log in, connection to channel
 
 Acceptance Tests - correctly connects to proper channel, can send and recieve message,
 
-### 3
+## 3
 
 Title - Log in
 
@@ -34,7 +34,7 @@ Feature Tasks - proper log in and cache of account information
 
 Acceptance Tests - log ins correctly, takes user to correct account and information. User sees correct region.
 
-### 4
+## 4
 
 Title - get weather based on location
 
@@ -44,7 +44,7 @@ Feature Tasks - get proper location services/ API calls, correct weather for loc
 
 Acceptance Tests - correct location, correct weather, correct events for location, etc.
 
-### 5
+## 5
 
 Title - Admin Capabilities
 
@@ -54,7 +54,7 @@ Feature Tasks - able to block users, able to update user profiles, able to updat
 
 Acceptance Tests - correctly blocks a user, correctly updates user(s) profile(s), correctly blocks access per roles.
 
-### 6
+## 6
 
 Title - Subscribe to general chat
 
@@ -64,7 +64,7 @@ Feature Tasks - Can connect to and subscribe to general chat channel/room.
 
 Acceptance Tests - Properly authorizes user based on RBAC to connect, view, message, etc. in general chat as well as subscribe to be notified of new messages, content on general chat channel/room.
 
-### 7
+## 7
 
 Title - Admin control/ RBAC users control
 
@@ -74,7 +74,7 @@ Feature Tasks - RBAC control to add and or remove users to channels/rooms and ch
 
 Acceptance Tests - Admin has proper RBAC to add and remove users from channels/rooms.
 
-### 8
+## 8
 
 Title - Admin control/ RBAC channels control
 
@@ -84,12 +84,10 @@ Feature Tasks - RBAC control to add and or remove channels/rooms and change thei
 
 Acceptance Tests - Admin has proper RBAC to add and remove channels/rooms.
 
-![Socket Diagram](./assets/SocketDiagram.png)
+![Socket Diagram](./assets/client_server_diagram.png)
 
-![Auth Diagram](./assets/AuthDiagram.png)
+![Auth Diagram](./assets/auth_diagram.png)
 
-![Notification Diagram](./assets/NotificationsDiagram.png)
+![Notification Diagram](./assets/notifications_diagram.png)
 
-![Database Schema](./assets/dBSchema.png)
-
-[Trello Board](https://trello.com/b/UkFI8VZF/project-board)
+![Database Schema](./assets/database_schema.png)
