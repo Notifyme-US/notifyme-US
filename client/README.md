@@ -7,7 +7,7 @@ This repo is the client-side application for our travel chat/info server. It all
 ## Usage
 
 - Primary:
-  1. run `npx notifyme-client` in the command line
+  1. run `npx travelio-client` in the command line
 
 - Alternate:
   1. navigate to any preferred directory in which to install the github repo
