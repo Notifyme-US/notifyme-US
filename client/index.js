@@ -6,11 +6,12 @@ require('dotenv').config();
 const { io } = require('socket.io-client');
 const chalk = require('chalk');
 
+console.log('starting client...');
 
 // For testing - use local server
 // const SERVER = process.env.SERVER_LOCAL;
 
-const SERVER = 'http://travelio-prod.us-west-2.elasticbeanstalk.com/';
+const SERVER = 'http://travelio-prod.us-west-2.elasticbeanstalk.com';
 
 const socket = io(`${SERVER}/chat`);
 
@@ -23,11 +24,16 @@ const messenger = require('./src/messenger')(socket, session, roomPrompt);
 socket.on('connect', async () => {
   console.clear();
   console.log('connected');
-
-  const { username, rooms, zip } = await authPrompt();
-  session.username = username;
-  session.roomList = rooms;
-  session.userZip = zip;
+  try {
+    const authResponse = await authPrompt();
+    
+    const { username, rooms, zip } = authResponse;
+    session.username = username;
+    session.roomList = rooms;
+    session.userZip = zip;
+  } catch (e) {
+    process.exit();
+  }
 
   await roomPrompt(session.roomList);
 

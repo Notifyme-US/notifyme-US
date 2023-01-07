@@ -78,8 +78,7 @@ module.exports = (socket, SERVER) => async function authPrompt() {
   const { username, password } = authAnswers;
   
   if(authRoute === 'cancel') {
-    console.log('Bon Voyage!');
-    process.exit();
+    return null;
   }
 
   if(authRoute === 'signin') {
