@@ -1,9 +1,9 @@
 {
   "name": "travelio-client",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "description": "client-side application for interacting with the travelio server",
-  "main": "index.js",
-  "bin": "index.js",
+  "main": "./index.js",
+  "bin": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/julian-barker/travelio/issues"
   },
-  "homepage": "https://github.com/julian-barker/travelio#readme",
+  "homepage": "https://github.com/julian-barker/travelio/tree/main/client#README.md",
   "dependencies": {
     "axios": "^1.2.1",
     "base-64": "^1.0.0",
