@@ -9,7 +9,8 @@ module.exports = (SERVER) => async function authPrompt() {
       {
         type: 'list',
         name: 'auth',
-        message: 'select one...',
+        message: 
+          `\nWelcome to Travelio!\n\nPlease select one...`,
         choices: ['signin', 'signup', 'cancel'],
       },
     ],
